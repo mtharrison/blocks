@@ -6,18 +6,14 @@ import (
 
 func Solve(p Puzzle) []int {
 
-	// Build the block graph without neighbour info
+	// Build the block graph
 
-	graph := []BlockNode{}
+	graph := BlockGraph{}
 
 	for i, v := range p.Data {
+
 		node := BlockNode{id: i, color: v, neighbours: make(map[int]bool)}
 		graph = append(graph, node)
-	}
-
-	// Fill neighbour info
-
-	for i, b := range graph {
 
 		neighbours := []int{}
 
@@ -33,13 +29,13 @@ func Solve(p Puzzle) []int {
 			neighbours = append(neighbours, i-p.Size)
 		}
 
-		if i/p.Size != (len(graph)/p.Size)-1 {
+		if i/p.Size != (len(p.Data)/p.Size)-1 {
 			neighbours = append(neighbours, i+p.Size)
 		}
 
 		for _, n := range neighbours {
-			if graph[n].color == b.color {
-				b.neighbours[n] = true
+			if p.Data[n] == node.color {
+				node.neighbours[n] = true
 			}
 		}
 	}
@@ -71,7 +67,7 @@ func SortedMapKeys(m map[int]bool) []int {
 	return keys
 }
 
-func DepthFirstTraversal(i int, g []BlockNode, visited map[int]bool) []int {
+func DepthFirstTraversal(i int, g BlockGraph, visited map[int]bool) []int {
 
 	// Check if already visited
 

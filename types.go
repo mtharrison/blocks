@@ -10,3 +10,5 @@ type BlockNode struct {
 	color      int
 	neighbours map[int]bool
 }
+
+type BlockGraph []BlockNode
