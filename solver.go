@@ -4,19 +4,24 @@ import (
 	"sort"
 )
 
+type Puzzle struct {
+	Data []int
+	Size int
+}
+
 type blockNode struct {
 	id         int
 	color      int
 	neighbours map[int]bool
 }
 
-func solve(input []int, rowSize int) []int {
+func solve(p Puzzle) []int {
 
 	// Build the block graph without neighbour info
 
 	graph := []blockNode{}
 
-	for i, v := range input {
+	for i, v := range p.Data {
 		node := blockNode{id: i, color: v, neighbours: make(map[int]bool)}
 		graph = append(graph, node)
 	}
@@ -27,20 +32,20 @@ func solve(input []int, rowSize int) []int {
 
 		neighbours := []int{}
 
-		if i%rowSize != 0 {
+		if i%p.Size != 0 {
 			neighbours = append(neighbours, i-1)
 		}
 
-		if i%rowSize != rowSize-1 {
+		if i%p.Size != p.Size-1 {
 			neighbours = append(neighbours, i+1)
 		}
 
-		if i/rowSize != 0 {
-			neighbours = append(neighbours, i-rowSize)
+		if i/p.Size != 0 {
+			neighbours = append(neighbours, i-p.Size)
 		}
 
-		if i/rowSize != (len(graph)/rowSize)-1 {
-			neighbours = append(neighbours, i+rowSize)
+		if i/p.Size != (len(graph)/p.Size)-1 {
+			neighbours = append(neighbours, i+p.Size)
 		}
 
 		for _, n := range neighbours {
