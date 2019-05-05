@@ -4,25 +4,14 @@ import (
 	"sort"
 )
 
-type Puzzle struct {
-	Data []int
-	Size int
-}
-
-type blockNode struct {
-	id         int
-	color      int
-	neighbours map[int]bool
-}
-
-func solve(p Puzzle) []int {
+func Solve(p Puzzle) []int {
 
 	// Build the block graph without neighbour info
 
-	graph := []blockNode{}
+	graph := []BlockNode{}
 
 	for i, v := range p.Data {
-		node := blockNode{id: i, color: v, neighbours: make(map[int]bool)}
+		node := BlockNode{id: i, color: v, neighbours: make(map[int]bool)}
 		graph = append(graph, node)
 	}
 
@@ -61,7 +50,7 @@ func solve(p Puzzle) []int {
 	visited := make(map[int]bool)
 
 	for i := range graph {
-		nodes := dfs(i, graph, visited)
+		nodes := DepthFirstTraversal(i, graph, visited)
 		if len(nodes) > len(largest) {
 			largest = nodes
 		}
@@ -70,7 +59,7 @@ func solve(p Puzzle) []int {
 	return largest
 }
 
-func sortedMapKeys(m map[int]bool) []int {
+func SortedMapKeys(m map[int]bool) []int {
 
 	keys := []int{}
 	for i := range m {
@@ -82,7 +71,7 @@ func sortedMapKeys(m map[int]bool) []int {
 	return keys
 }
 
-func dfs(i int, g []blockNode, visited map[int]bool) []int {
+func DepthFirstTraversal(i int, g []BlockNode, visited map[int]bool) []int {
 
 	// Check if already visited
 
@@ -99,8 +88,8 @@ func dfs(i int, g []blockNode, visited map[int]bool) []int {
 
 	// Recurse on neighbours
 
-	for _, i := range sortedMapKeys(node.neighbours) {
-		nodes = append(nodes, dfs(i, g, visited)...)
+	for _, i := range SortedMapKeys(node.neighbours) {
+		nodes = append(nodes, DepthFirstTraversal(i, g, visited)...)
 	}
 
 	return nodes

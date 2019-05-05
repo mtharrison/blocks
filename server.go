@@ -27,7 +27,7 @@ func solveHandle(w http.ResponseWriter, r *http.Request) {
 	d := json.NewDecoder(r.Body)
 	d.Decode(&puzzle)
 
-	solution := solve(puzzle)
+	solution := Solve(puzzle)
 
 	e := json.NewEncoder(w)
 	e.Encode(solution)

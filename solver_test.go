@@ -12,7 +12,7 @@ func TestSortedMapKeys(t *testing.T) {
 		4: true,
 	}
 
-	keys := sortedMapKeys(m)
+	keys := SortedMapKeys(m)
 	expected := []int{4, 7, 9}
 
 	if !reflect.DeepEqual(keys, expected) {
@@ -21,15 +21,18 @@ func TestSortedMapKeys(t *testing.T) {
 }
 
 func TestSolve(t *testing.T) {
-	input := []int{
-		0, 0, 1, 2,
-		0, 1, 2, 1,
-		2, 1, 1, 1,
+
+	puzzle := Puzzle{
+		Data: []int{
+			0, 0, 1, 2,
+			0, 1, 2, 1,
+			2, 1, 1, 1,
+		},
+		Size: 4,
 	}
 
-	rowSize := 4
+	solution := Solve(puzzle)
 
-	solution := solve(input, rowSize)
 	expected := []int{5, 9, 10, 11, 7}
 
 	if !reflect.DeepEqual(solution, expected) {
